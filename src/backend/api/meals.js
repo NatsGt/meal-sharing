@@ -46,6 +46,7 @@ router.get("/", async (request, response) => {
     const meals = await knex("meals");
     response.send(meals);
   } catch (error) {
+    response.status(500).send({ error: 'Something went wrong' })
     throw error;
   }
 });
@@ -54,8 +55,14 @@ router.get("/:id", async (request, response) => {
   try {
     const mealID = request.params.id;
     const mealSelected = await knex("meals").where("id", mealID);
-    response.send(mealSelected[0]);
+    if (mealSelected.length > 0) {
+      response.send(mealSelected[0]);
+    } else {
+      response.status(404).send({ error: 'Meal id not found' })
+    }
+
   } catch (error) {
+    response.status(500).send({ error: 'Something went wrong' })
     throw error;
   }
 })
@@ -65,6 +72,7 @@ router.post("/", async (request, response) => {
     const meals = await knex("meals").insert(request.body);
     response.json(meals);
   } catch (error) {
+    response.status(500).send({ error: 'Something went wrong' })
     throw error;
   }
 })
@@ -75,6 +83,7 @@ router.put("/:id", async (request, response) => {
     const mealSelected = await knex("meals").where("id", mealID).update(request.body)
     response.json(mealSelected);
   } catch (error) {
+    response.status(500).send({ error: 'Something went wrong' })
     throw error;
   }
 })
@@ -85,6 +94,7 @@ router.delete("/:id", async (request, response) => {
     const mealSelected = await knex("meals").where("id", mealID).del();
     response.json(mealSelected);
   } catch (error) {
+    response.status(500).send({ error: 'Something went wrong' })
     throw error;
   }
 })
