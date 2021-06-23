@@ -46,7 +46,7 @@ router.get("/", async (request, response) => {
     const meals = await knex("meals");
     response.send(meals);
   } catch (error) {
-    response.status(500).send({ error: 'Something went wrong' })
+    response.status(500).send({ error: error })
     throw error;
   }
 });
