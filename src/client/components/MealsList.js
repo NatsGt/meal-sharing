@@ -6,9 +6,10 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form'
 import "./MealsList.css";
 import SearchBar from "./SearchTitle";
-import Form from 'react-bootstrap/Form';
+import TextInput, { TextArea, NumberInput, DateInput } from "./InputsComponent";
 
 function FormModal(props) {
     return (
@@ -98,39 +99,23 @@ function AddMeal() {
             max_reservations: "",
             price: ""
         })
-        event.preventDefault();
     }
     return (
         <div className="meal-form">
-            <Form.Group controlId="formMealTitle">
-                <Form.Label>Title*</Form.Label>
-                <Form.Control type="text" placeholder="Enter the name of your meal" name="title" onChange={(e) => handleChange(e.target)} value={inputMeal.title} required autoComplete="off" />
-            </Form.Group>
-            <Form.Group controlId="formMealTitle">
-                <Form.Label>Description*</Form.Label>
-                <Form.Control type="text" placeholder="Enter a description" name="description" onChange={(e) => handleChange(e.target)} value={inputMeal.description} required autoComplete="off" />
-            </Form.Group>
-            <Form.Group controlId="formMealTitle">
-                <Form.Label>Location*</Form.Label>
-                <Form.Control type="text" placeholder="Location" name="location" onChange={(e) => handleChange(e.target)} value={inputMeal.location} required autoComplete="off" />
-            </Form.Group>
-            <Form.Group controlId="formMealTitle">
-                <Form.Label>Date*</Form.Label>
-                <Form.Control type="datetime-local" name="when" onChange={(e) => handleChange(e.target)} value={inputMeal.when} required />
-            </Form.Group>
-            <Form.Group controlId="formMealTitle">
-                <Form.Label>Max Reservation*</Form.Label>
-                <Form.Control type="number" placeholder="Max number of guests" name="max_reservations" onChange={(e) => handleChange(e.target)} value={inputMeal.max_reservations} required autoComplete="off" />
-            </Form.Group>
-            <Form.Group controlId="formMealTitle">
-                <Form.Label>Price*</Form.Label>
-                <Form.Control type="number" placeholder="Price" name="price" onChange={(e) => handleChange(e.target)} value={inputMeal.price} required autoComplete="off" />
-            </Form.Group>
-            <div className="d-flex justify-content-center">
-                <Button onClick={handleSubmit} className="form-add-button">
-                    Add meal
-                </Button>
-            </div>
+            <Form onSubmit={handleSubmit}>
+                <TextInput change={handleChange} label="Title*" placeholder="Enter the name of your meal" name="title" value={inputMeal.title} />
+                <TextArea change={handleChange} label="Description*" placeholder="Enter a description" name="description" value={inputMeal.description} />
+                <TextInput change={handleChange} label="Location*" placeholder="Enter the location" name="location" value={inputMeal.location} />
+                <DateInput change={handleChange} label="Date*" placeholder="Enter the date and time" name="when" value={inputMeal.when} />
+                <NumberInput change={handleChange} label="Max Reservation*" placeholder="Max number of guests" name="max_reservations" value={inputMeal.max_reservations} min="1" max="100" />
+                <NumberInput change={handleChange} label="Price*" placeholder="Price" name="max_reservations" value={inputMeal.price} min="1" max="1000000" />
+                <div className="d-flex justify-content-center">
+                    <Button type="submit" className="form-add-button">
+                        Add meal
+                    </Button>
+                </div>
+            </Form>
+
 
         </div>
     )

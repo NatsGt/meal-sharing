@@ -31,6 +31,12 @@
   top: 12px;
   right: 12px;
   padding: 0 5px;
+  background-color: #1bb28c;
+  border: #1bb28c;
+}
+
+.modal-button:hover {
+  background-color: #e86a58;
 }
 
 .meal-card {

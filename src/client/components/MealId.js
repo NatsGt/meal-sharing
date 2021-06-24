@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch, useParams } from "react-router-dom";
+import { BrowserRouter as Router, useParams } from "react-router-dom";
 import MainContainer from "./MainContainer";
 import fetchData from "./fetchData";
 import Form from 'react-bootstrap/Form';
@@ -9,42 +9,7 @@ import Card from 'react-bootstrap/Card';
 import './MealId.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
-
-function TextInput(props) {
-    return (
-        <Form.Group controlId="formMealTitle">
-            <Form.Label>{props.label}</Form.Label>
-            <Form.Control type="text" placeholder={props.placeholder} name={props.name} onChange={(e) => props.change(e.target)} value={props.value} autoComplete="off" />
-        </Form.Group>
-    )
-}
-
-function EmailInput(props) {
-    return (
-        <Form.Group controlId="formMealTitle">
-            <Form.Label>{props.label}</Form.Label>
-            <Form.Control type="email" placeholder={props.placeholder} name={props.name} onChange={(e) => props.change(e.target)} value={props.value} autoComplete="off" />
-        </Form.Group>
-    )
-}
-
-function TextArea(props) {
-    return (
-        <Form.Group controlId="ControlTextarea1">
-            <Form.Label>{props.label}</Form.Label>
-            <Form.Control as="textarea" rows={3} type="text" placeholder={props.placeholder} name={props.name} onChange={(e) => props.change(e.target)} value={props.value} />
-        </Form.Group>
-    )
-}
-
-function NumberInput(props) {
-    return (
-        <Form.Group controlId="formMealTitle">
-            <Form.Label>{props.label}</Form.Label>
-            <Form.Control type="number" placeholder={props.placeholder} name={props.name} onChange={(e) => props.change(e.target)} value={props.value} min={props.min} max={props.max} />
-        </Form.Group>
-    )
-}
+import TextInput, { EmailInput, TextArea, NumberInput } from "./InputsComponent";
 
 function AddNewReservation(props) {
     const { availableMeal } = props;
@@ -286,5 +251,3 @@ export default function MealId() {
             </div>
         </MainContainer>)
 }
-// {availableMeals.map(meal => <div>{meal.title}</div>)}
-//Make text area for description
