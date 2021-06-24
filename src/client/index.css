@@ -1,19 +1,32 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-@import 'theme.css';
+/*
+COLOR PALETTE
+#23362b
+#1bb28c
+#e86a58
+#fed45b
+#9bc7c5
+#efeeea
+font-family: 'Alex Brush', cursive;
+font-family: 'Open Sans', sans-serif;
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Alex+Brush&family=Open+Sans:ital,wght@0,400;0,700;0,800;1,400&display=swap");
+
 * {
-  font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
 }
 
-#root {
-  padding-left: 30%;
-  padding-right: 30%;
+.App {
   height: 100vh;
 }
 
+h1,
+h2 {
+  font-family: "Alex Brush", cursive;
+}
+
 body {
-  margin: 0;
-  font-size: 17px;
+  font-family: "Open Sans", sans-serif;
 }
 
 ul {
@@ -38,15 +51,7 @@ button {
 }
 
 @media screen and (max-width: 1400px) {
-  #root {
-    padding-left: 30%;
-    padding-right: 30%;
-  }
 }
 
 @media screen and (max-width: 750px) {
-  #root {
-    padding-left: 0;
-    padding-right: 0;
-  }
 }

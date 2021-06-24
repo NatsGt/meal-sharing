@@ -1,0 +1,91 @@
+.meals-section-container {
+  position: relative;
+  min-height: 100vh;
+  background-color: #efeeea;
+  background-repeat: repeat;
+}
+
+.modal-container {
+  width: 50vw;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #9bc7c5;
+  padding: 25px;
+  overflow-y: auto;
+}
+
+.modal-layover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 50%);
+}
+
+.modal-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 0 5px;
+}
+
+.meal-card {
+  width: 80%;
+  margin: 25px 0;
+  background-color: rgba(27, 178, 140, 0.4);
+}
+
+.card-image-container {
+  overflow: hidden;
+  height: 150px;
+}
+
+.meal-card-img {
+  width: 100%;
+}
+
+.meal-card-title {
+  text-transform: capitalize;
+}
+
+.meal-card-text-container {
+  height: 100px;
+}
+
+.meal-card-text {
+  text-transform: capitalize;
+}
+
+.meal-collection-container {
+  width: 75%;
+}
+
+.meal-card-button {
+  background-color: #1bb28c;
+  border: #1bb28c;
+}
+
+.meal-card-button:hover {
+  background-color: #efeeea;
+  color: #23362b;
+}
+
+.add-meal-button {
+  background-color: #9bc7c5;
+  border: #9bc7c5;
+  color: #23362b;
+}
+
+.form-add-button {
+  background-color: #e86a58;
+  border: #e86a58;
+}
+
+.add-meal-button:hover,
+.form-add-button:hover {
+  background-color: #1bb28c;
+}
