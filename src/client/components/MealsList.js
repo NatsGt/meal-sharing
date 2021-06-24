@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import "./MealsList.css";
 import SearchBar from "./SearchTitle";
-import Form from 'react-bootstrap/Form'
+import Form from 'react-bootstrap/Form';
 
 function FormModal(props) {
     return (
@@ -41,7 +41,7 @@ function ModalContainer() {
     console.log(status)
     return (
         <div>
-            <Button size="lg" onClick={showModal}>
+            <Button size="lg" className="add-meal-button" onClick={showModal}>
                 Add a Meal
             </Button>
             {status && <FormModal close={showModal} />}
@@ -71,7 +71,6 @@ function AddMeal() {
                 body: JSON.stringify(newMeal) // body data type must match "Content-Type" header
             })
         })();
-
     }
 
     useEffect(() => {
@@ -104,32 +103,35 @@ function AddMeal() {
     return (
         <div className="meal-form">
             <Form.Group controlId="formMealTitle">
-                <Form.Label>Title</Form.Label>
-                <Form.Control type="text" placeholder="Enter the name of your meal" name="title" onChange={(e) => handleChange(e.target)} value={inputMeal.title} />
+                <Form.Label>Title*</Form.Label>
+                <Form.Control type="text" placeholder="Enter the name of your meal" name="title" onChange={(e) => handleChange(e.target)} value={inputMeal.title} required autoComplete="off" />
             </Form.Group>
             <Form.Group controlId="formMealTitle">
-                <Form.Label>Description</Form.Label>
-                <Form.Control type="text" placeholder="Enter a description" name="description" onChange={(e) => handleChange(e.target)} value={inputMeal.description} />
+                <Form.Label>Description*</Form.Label>
+                <Form.Control type="text" placeholder="Enter a description" name="description" onChange={(e) => handleChange(e.target)} value={inputMeal.description} required autoComplete="off" />
             </Form.Group>
             <Form.Group controlId="formMealTitle">
-                <Form.Label>Location</Form.Label>
-                <Form.Control type="text" placeholder="Location" name="location" onChange={(e) => handleChange(e.target)} value={inputMeal.location} />
+                <Form.Label>Location*</Form.Label>
+                <Form.Control type="text" placeholder="Location" name="location" onChange={(e) => handleChange(e.target)} value={inputMeal.location} required autoComplete="off" />
             </Form.Group>
             <Form.Group controlId="formMealTitle">
-                <Form.Label>Date</Form.Label>
-                <Form.Control type="datetime-local" name="when" onChange={(e) => handleChange(e.target)} value={inputMeal.when} />
+                <Form.Label>Date*</Form.Label>
+                <Form.Control type="datetime-local" name="when" onChange={(e) => handleChange(e.target)} value={inputMeal.when} required />
             </Form.Group>
             <Form.Group controlId="formMealTitle">
-                <Form.Label>Max Reservation</Form.Label>
-                <Form.Control type="number" placeholder="Max number of guests" name="max_reservations" onChange={(e) => handleChange(e.target)} value={inputMeal.max_reservations} />
+                <Form.Label>Max Reservation*</Form.Label>
+                <Form.Control type="number" placeholder="Max number of guests" name="max_reservations" onChange={(e) => handleChange(e.target)} value={inputMeal.max_reservations} required autoComplete="off" />
             </Form.Group>
             <Form.Group controlId="formMealTitle">
-                <Form.Label>Price</Form.Label>
-                <Form.Control type="number" placeholder="Price" name="price" onChange={(e) => handleChange(e.target)} value={inputMeal.price} />
+                <Form.Label>Price*</Form.Label>
+                <Form.Control type="number" placeholder="Price" name="price" onChange={(e) => handleChange(e.target)} value={inputMeal.price} required autoComplete="off" />
             </Form.Group>
-            <Button onClick={handleSubmit}>
-                Add meal
-            </Button>
+            <div className="d-flex justify-content-center">
+                <Button onClick={handleSubmit} className="form-add-button">
+                    Add meal
+                </Button>
+            </div>
+
         </div>
     )
 }
@@ -137,15 +139,24 @@ function AddMeal() {
 function OneMealCard(props) {
     return (
         <Card className="meal-card p-3">
-            <Card.Img variant="top" className="meal-card-img" src="https://cdn3.iconfinder.com/data/icons/food-set-3/91/Food_C230-256.png" />
+            <div className="card-image-container">
+                <Card.Img variant="top" className="meal-card-img" src={props.img} alt="meal image" />
+            </div>
             <Card.Body className="px-0">
                 <Card.Title className="meal-card-title">{props.title}</Card.Title>
                 <div className="meal-card-text-container">
                     <Card.Text className="meal-card-text text-truncate">
                         {props.description}
                     </Card.Text>
+                    <Card.Text className="meal-card-text">
+                        {props.location}
+                    </Card.Text>
                 </div>
-                <Link to={`${props.url}/${props.link}`}>Go to meal</Link>
+                <Link to={`${props.url}/${props.link}`}>
+                    <Button className="meal-card-button">
+                        Go to meal
+                    </Button>
+                </Link>
             </Card.Body>
         </Card>
     )
@@ -154,11 +165,15 @@ function OneMealCard(props) {
 function MealCards(props) {
     return (
         <Row xs={1} md={3} className="g-4 mx-0">
-            {Array.from(props.array).map((meal) => (
-                <Col className="px-0" key={meal.id}>
-                    <OneMealCard title={meal.title} description={meal.description} link={meal.id} url={props.url} />
-                </Col>
-            ))}
+            {Array.from(props.array).map((meal) => {
+                let fileName = `./public/img/${meal.id}.jpg`
+                return (
+                    <Col className="px-0" key={meal.id}>
+                        <OneMealCard img={fileName} title={meal.title} description={meal.description} link={meal.id} url={props.url} location={meal.location} time={meal.when} />
+                    </Col>
+                )
+            }
+            )}
         </Row>
     )
 }
@@ -176,13 +191,18 @@ export default function MealsList() {
     }, [])
 
     return (
-        <MainContainer componentStyle="meals-section-container d-flex flex-column align-items-center pb-5">
-            <h1 className="my-5">Meal Sharing</h1>
-            <SearchBar />
-            <div className="meal-collection-container">
-                <MealCards array={meals} url={url} />
+        <MainContainer componentStyle="meals-section-container ">
+            <div className="w-100 d-flex flex-column align-items-center pb-5 px-5">
+                <h1 className="mt-5 mb-2">Meal Sharing</h1>
+                <div className="w-50 my-5">
+                    <SearchBar />
+                </div>
+                <div className="meal-collection-container">
+                    <MealCards array={meals} url={url} />
+                </div>
+                <ModalContainer />
             </div>
-            <ModalContainer />
+
             <Switch>
                 <Route path={`${path}/:id`}>
                     <MealId />

@@ -1,0 +1,64 @@
+.meal-section-container {
+  background-color: #efeeea;
+}
+
+.data-container {
+  background-color: rgba(27, 178, 140, 0.4);
+  width: 60vw;
+  border-radius: 12px;
+}
+
+.accordion-container {
+  width: 30vw;
+}
+
+.meal-img {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.meal-title {
+  text-transform: capitalize;
+  font-size: 70px;
+}
+
+.add-button {
+  background-color: #e86a58;
+  border: #e86a58;
+}
+
+.add-button:hover {
+  background-color: #fed45b;
+  color: #23362b;
+}
+
+.review-container {
+  border: #e86a58 dashed 0.5px;
+}
+
+.review-title {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.accordion-box {
+  background-color: rgba(27, 178, 140, 0.4) !important;
+  border-radius: 12px;
+}
+
+.accordion-box .card {
+  background-color: transparent;
+  border: none;
+}
+
+.accordion-box button {
+  color: #23362b;
+}
+
+.accordion-box button:hover {
+  color: #efeeea;
+}
+
+.add-review-title {
+  text-transform: uppercase;
+}

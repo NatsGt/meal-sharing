@@ -49,7 +49,6 @@ function ReviewCarousel(props) {
                                 src="https://images.pexels.com/photos/8107166/pexels-photo-8107166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
                                 alt="First slide"
                                 roundedCircle />
-
                         </div>
                         <Carousel.Caption>
                             <p className="slide-text mb-0">{aReview.description}</p>
@@ -67,7 +66,7 @@ function ReviewsSection() {
     useEffect(() => {
         const url = 'http://localhost:5000/api/reviews'
         fetchData(url).then((data) => {
-            const selectedReviews = data.filter((review) => review.stars === 4);
+            const selectedReviews = data.filter((review) => review.stars >= 4);
             console.log(selectedReviews)
             setGoodReviews(selectedReviews)
         });

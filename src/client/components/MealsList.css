@@ -39,8 +39,13 @@
   background-color: rgba(27, 178, 140, 0.4);
 }
 
+.card-image-container {
+  overflow: hidden;
+  height: 150px;
+}
+
 .meal-card-img {
-  width: 50px;
+  width: 100%;
 }
 
 .meal-card-title {
@@ -48,7 +53,7 @@
 }
 
 .meal-card-text-container {
-  height: 50px;
+  height: 100px;
 }
 
 .meal-card-text {
@@ -57,4 +62,30 @@
 
 .meal-collection-container {
   width: 75%;
+}
+
+.meal-card-button {
+  background-color: #1bb28c;
+  border: #1bb28c;
+}
+
+.meal-card-button:hover {
+  background-color: #efeeea;
+  color: #23362b;
+}
+
+.add-meal-button {
+  background-color: #9bc7c5;
+  border: #9bc7c5;
+  color: #23362b;
+}
+
+.form-add-button {
+  background-color: #e86a58;
+  border: #e86a58;
+}
+
+.add-meal-button:hover,
+.form-add-button:hover {
+  background-color: #1bb28c;
 }

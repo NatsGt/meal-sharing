@@ -19,16 +19,10 @@ export default function Navigation() {
                         <div className="w-100 d-flex flex-column flex-lg-row justify-content-lg-end">
                             <Link to="/" className="px-5 text-center nav-link">Home</Link>
                             <Link to="/meals" className="px-5 text-center nav-link">Meals</Link>
-                            <Link to="/reviews" className="px-5 text-center nav-link">Reviews</Link>
                         </div>
-
-
                     </Nav>
-
                 </Navbar.Collapse>
             </Navbar>
-
         </div>
-
     )
 }
