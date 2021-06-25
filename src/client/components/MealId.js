@@ -23,7 +23,7 @@ function AddNewReservation(props) {
     })
     function postNewReservation() {
         (async () => {
-            await fetch('http://localhost:5000/api/reservations', {
+            await fetch('/api/reservations', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 headers: {
@@ -98,7 +98,7 @@ function ReviewsBox(props) {
     const { id } = props
     const [reviews, setReviews] = useState()
     useEffect(() => {
-        fetchData('http://localhost:5000/api/reviews')
+        fetchData('/api/reviews')
             .then((data) => data.filter(review => review.meal_id == id))
             .then((mealReviews) => setReviews(mealReviews))
     }, [])
@@ -124,7 +124,7 @@ function AddReview(props) {
     })
     function postNewReservation() {
         (async () => {
-            await fetch('http://localhost:5000/api/reviews', {
+            await fetch('/api/reviews', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 headers: {
@@ -222,13 +222,13 @@ export default function MealId() {
     const [isAvailable, setIsAvailable] = useState(false)
 
     useEffect(() => {
-        fetchData(`http://localhost:5000/api/meals/${id}`)
+        fetchData(`/api/meals/${id}`)
             .then(values => setMeal(values))
 
     }, [])
 
     useEffect(() => {
-        fetchData(`http://localhost:5000/api/meals?availableReservations=true`)
+        fetchData(`/api/meals?availableReservations=true`)
             .then(values => {
                 const availableMeals = values;
                 return availableMeals
