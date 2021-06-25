@@ -13,7 +13,7 @@ import './Home.css'
 function MealsCollection() {
     const [meals, setMeals] = useState([]);
     useEffect(() => {
-        const url = '/api/meals'
+        const url = 'http://localhost:5000/api/meals'
         fetchData(url).then((data) => setMeals(() => data));
     }, [])
     return (
@@ -64,7 +64,7 @@ function ReviewCarousel(props) {
 function ReviewsSection() {
     const [goodReviews, setGoodReviews] = useState([])
     useEffect(() => {
-        const url = '/api/reviews'
+        const url = 'http://localhost:5000/api/reviews'
         fetchData(url).then((data) => {
             const selectedReviews = data.filter((review) => review.stars >= 4);
             console.log(selectedReviews)
