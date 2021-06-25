@@ -10,6 +10,7 @@ import Form from 'react-bootstrap/Form'
 import "./MealsList.css";
 import SearchBar from "./SearchTitle";
 import TextInput, { TextArea, NumberInput, DateInput } from "./InputsComponent";
+import fetchData, { postData } from "./ManageData";
 
 function FormModal(props) {
     return (
@@ -62,7 +63,7 @@ function AddMeal() {
     })
     function postNewMeal() {
         (async () => {
-            await fetch('http://localhost:5000/api/meals', {
+            await fetch('/api/meals', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 headers: {
@@ -170,7 +171,7 @@ export default function MealsList() {
     console.log(path, ' path')
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/meals')
+        fetch('/api/meals')
             .then((response) => response.json())
             .then((data) => setMeals(data));
     }, [])

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainContainer from "./MainContainer";
 import SearchBar from './SearchTitle'
-import fetchData from "./fetchData";
+import fetchData, { Loading } from "./ManageData";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Carousel from 'react-bootstrap/Carousel';
@@ -13,7 +13,7 @@ import './Home.css'
 function MealsCollection() {
     const [meals, setMeals] = useState([]);
     useEffect(() => {
-        const url = 'http://localhost:5000/api/meals'
+        const url = '/api/meals'
         fetchData(url).then((data) => setMeals(() => data));
     }, [])
     return (
@@ -62,12 +62,11 @@ function ReviewCarousel(props) {
 }
 
 function ReviewsSection() {
-    const [goodReviews, setGoodReviews] = useState([])
+    const [goodReviews, setGoodReviews] = useState([]);
     useEffect(() => {
-        const url = 'http://localhost:5000/api/reviews'
+        const url = '/api/reviews'
         fetchData(url).then((data) => {
             const selectedReviews = data.filter((review) => review.stars >= 4);
-            console.log(selectedReviews)
             setGoodReviews(selectedReviews)
         });
     }, [])
