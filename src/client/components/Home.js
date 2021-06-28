@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MainContainer from "./MainContainer";
 import SearchBar from './SearchTitle'
-import fetchData, { Loading } from "./ManageData";
+import { useFetch, Loading, Error } from "./ManageData";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Carousel from 'react-bootstrap/Carousel';
@@ -11,17 +11,21 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import './Home.css'
 
 function MealsCollection() {
-    const [meals, setMeals] = useState([]);
-    useEffect(() => {
-        const url = '/api/meals'
-        fetchData(url).then((data) => setMeals(() => data));
-    }, [])
+    const url = '/api/meals'
+    const { fetchData, fetchError, loading } = useFetch(url);
+
+    if (fetchError) {
+        return (
+            <Error />
+        )
+    }
     return (
         <div>
             <p>Come and share these meals...</p>
             <ul>
+                {loading && <Loading />}
                 <Row xs={2} md={3} className="g-4 row-meals-collection">
-                    {Array.from(meals).map(meal => (
+                    {(fetchData) && fetchData.map(meal => (
                         <Col key={meal.id}>
                             <li className="meal-li" >{meal.title}</li>
                         </Col>
@@ -62,17 +66,21 @@ function ReviewCarousel(props) {
 }
 
 function ReviewsSection() {
+    const url = '/api/reviews'
     const [goodReviews, setGoodReviews] = useState([]);
-    useEffect(() => {
-        const url = '/api/reviews'
-        fetchData(url).then((data) => {
+    const { fetchData, fetchError } = useFetch(url);
+    /* useEffect(() => {
+        fetchData.then((data) => {
             const selectedReviews = data.filter((review) => review.stars >= 4);
             setGoodReviews(selectedReviews)
         });
-    }, [])
+    }, []) */
+    if (fetchError) {
+        return <Error />
+    }
     return (
         <MainContainer componentStyle="reviews-section">
-            <ReviewCarousel content={goodReviews} />
+            {fetchData && <ReviewCarousel content={fetchData.filter((review) => review.stars >= 4)} />}
         </MainContainer>
     )
 }

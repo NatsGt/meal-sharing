@@ -1,17 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faFrown } from '@fortawesome/free-solid-svg-icons'
 
-function Loading() {
-    return <div><FontAwesomeIcon icon={faStar} /></div>
+function Error() {
+    return (
+        <div className="d-flex justify-content-center my-5">A problem ocurred getting the data <FontAwesomeIcon icon={faFrown} /></div>
+    )
 }
 
-export default function fetchData(url) {
+function Loading() {
+    return (
+        <div className="d-flex justify-content-center">
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden"></span>
+            </Spinner>
+        </div>
+
+    )
+}
+
+export default function manageFetch(url) {
     const fetchResponse = fetch(url).then((response) => response.json());
     return fetchResponse;
 }
 
-function postNewMeal(url, objectToPost) {
+function useFetch(url) {
+    const [fetchData, setFetchData] = useState();
+    const [fetchError, setFetchError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        (async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(url);
+                const databaseData = await response.json();
+                setFetchData(databaseData);
+                setFetchError("");
+            } catch (error) {
+                setFetchError(error)
+            }
+            setLoading(false)
+        })();
+    }, [url])
+    return { fetchData, fetchError, loading }
+}
+
+function postData(url, objectToPost) {
     (async () => {
         await fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -25,4 +61,4 @@ function postNewMeal(url, objectToPost) {
     })();
 }
 
-export { postNewMeal, Loading }
+export { useFetch, postData, Loading, Error }

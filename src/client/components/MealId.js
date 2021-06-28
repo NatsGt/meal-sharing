@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, useParams } from "react-router-dom";
 import MainContainer from "./MainContainer";
-import fetchData, { postData } from "./ManageData";
+import manageFetch, { postData, Loading, Error, useFetch } from "./ManageData";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import Accordion from 'react-bootstrap/Accordion';
@@ -21,20 +21,6 @@ function AddNewReservation(props) {
         contact_name: "",
         contact_email: "",
     })
-    function postNewReservation() {
-        (async () => {
-            await fetch('/api/reservations', {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: JSON.stringify(newReservation) // body data type must match "Content-Type" header
-            })
-        })();
-
-    }
 
     useEffect(() => {
         setNewReservation(inputReservation)
@@ -51,8 +37,7 @@ function AddNewReservation(props) {
     }
 
     function handleSubmit() {
-        console.log(newReservation)
-        postNewReservation();
+        postData('/api/reservations', newReservation);
         setInputReservation({
             number_of_guests: "",
             meal_id: props.mealId,
@@ -60,16 +45,15 @@ function AddNewReservation(props) {
             contact_name: "",
             contact_email: "",
         })
-        event.preventDefault();
     }
     return (
         <div className="reservation-form">
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <NumberInput change={handleChange} label="Number of Guests*" placeholder="Number of guests" name="number_of_guests" value={inputReservation.number_of_guests} min="1" max={availableMeal ? (availableMeal.max_reservations - availableMeal.made_reservations) : 100} />
                 <TextInput change={handleChange} label="Name*" placeholder="Enter your name" name="contact_name" value={inputReservation.contact_name} />
                 <NumberInput change={handleChange} label="Phone" placeholder="Contact number" name="contact_phonenumber" value={inputReservation.contact_phonenumber} min="8" />
                 <EmailInput change={handleChange} label="Email*" placeholder="Contact email" name="contact_email" value={inputReservation.contact_email} />
-                <Button className="add-button" onClick={handleSubmit}>
+                <Button type="submit" className="add-button" >
                     Book reservation
                 </Button>
             </Form>
@@ -98,7 +82,7 @@ function ReviewsBox(props) {
     const { id } = props
     const [reviews, setReviews] = useState()
     useEffect(() => {
-        fetchData('/api/reviews')
+        manageFetch('/api/reviews')
             .then((data) => data.filter(review => review.meal_id == id))
             .then((mealReviews) => setReviews(mealReviews))
     }, [])
@@ -122,20 +106,6 @@ function AddReview(props) {
         description: "",
         stars: ""
     })
-    function postNewReservation() {
-        (async () => {
-            await fetch('/api/reviews', {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: JSON.stringify(newReview) // body data type must match "Content-Type" header
-            })
-        })();
-
-    }
 
     useEffect(() => {
         setNewReview(inputReview)
@@ -152,7 +122,7 @@ function AddReview(props) {
     }
 
     function handleSubmit() {
-        postNewReservation();
+        postData('/api/reviews', newReview);
         setInputReview({
             title: "",
             meal_id: props.mealId,
@@ -194,41 +164,41 @@ function MealForms(props) {
 }
 
 function MealData(props) {
-    const { meal, availableMeal } = props
-
-    return (
-        <div className="data-container p-5">
-            <h2 className="meal-title text-center">{meal.title}</h2>
-            <img src={`./public/img/${meal.id}.jpg`} alt="image of the meal" className="meal-img" />
-            <div className="pt-5">
-                <h4 className="font-weight-bold">Description</h4>
-                <p>{meal.description}</p>
-                <h4 className="font-weight-bold">Location</h4>
-                <p>{meal.location}</p>
-                <h4 className="font-weight-bold">Date</h4>
-                <p>{new Date(meal.when).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</p>
-                <h4 className="font-weight-bold">Available spaces</h4>
-                <p>{(availableMeal) ? (availableMeal.max_reservations - availableMeal.made_reservations) + " persons" : "No reservations left"}</p>
+    const { meal, availableMeal, error, loading } = props
+    if (error) {
+        return <Error />
+    } else {
+        return (
+            <div className="data-container p-5">
+                {loading && <Loading />}
+                {meal && <div>
+                    <h2 className="meal-title text-center">{meal.title}</h2>
+                    <img src={`./public/img/${meal.id}.jpg`} alt="image of the meal" className="meal-img" />
+                    <div className="pt-5">
+                        <h4 className="font-weight-bold">Description</h4>
+                        <p>{meal.description}</p>
+                        <h4 className="font-weight-bold">Location</h4>
+                        <p>{meal.location}</p>
+                        <h4 className="font-weight-bold">Date</h4>
+                        <p>{new Date(meal.when).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</p>
+                        <h4 className="font-weight-bold">Available spaces</h4>
+                        <p>{(availableMeal) ? (availableMeal.max_reservations - availableMeal.made_reservations) + " persons" : "No reservations left"}</p>
+                    </div>
+                </div>}
             </div>
-        </div>
-    )
+        )
+    }
 }
-
 
 export default function MealId() {
     const { id } = useParams();
-    const [meal, setMeal] = useState({});
     const [availableMeal, setAvailableMeal] = useState()
     const [isAvailable, setIsAvailable] = useState(false)
+    const url = `/api/meals/${id}`
+    const { fetchData, fetchError, loading } = useFetch(url)
 
     useEffect(() => {
-        fetchData(`/api/meals/${id}`)
-            .then(values => setMeal(values))
-
-    }, [])
-
-    useEffect(() => {
-        fetchData(`/api/meals?availableReservations=true`)
+        manageFetch(`/api/meals?availableReservations=true`)
             .then(values => {
                 const availableMeals = values;
                 return availableMeals
@@ -243,7 +213,7 @@ export default function MealId() {
     return (
         <MainContainer componentStyle="meal-section-container d-flex flex-column flex-lg-row justify-content-lg-between p-5">
             <div>
-                <MealData meal={meal} availableMeal={availableMeal} />
+                <MealData availableMeal={availableMeal} meal={fetchData} mealId={id} error={fetchError} loading={loading} />
                 <ReviewsBox id={id} />
             </div>
             <div className="accordion-container">

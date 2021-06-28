@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form'
 import "./MealsList.css";
 import SearchBar from "./SearchTitle";
 import TextInput, { TextArea, NumberInput, DateInput } from "./InputsComponent";
-import fetchData, { postData } from "./ManageData";
+import { postData, Loading, useFetch, Error } from "./ManageData";
 
 function FormModal(props) {
     return (
@@ -40,7 +40,6 @@ function ModalContainer() {
     function showModal() {
         setStatus(!status);
     }
-    console.log(status)
     return (
         <div>
             <Button size="lg" className="add-meal-button" onClick={showModal}>
@@ -61,19 +60,6 @@ function AddMeal() {
         max_reservations: "",
         price: ""
     })
-    function postNewMeal() {
-        (async () => {
-            await fetch('/api/meals', {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: JSON.stringify(newMeal) // body data type must match "Content-Type" header
-            })
-        })();
-    }
 
     useEffect(() => {
         setNewMeal(inputMeal)
@@ -90,8 +76,7 @@ function AddMeal() {
     }
 
     function handleSubmit() {
-        console.log(newMeal)
-        postNewMeal();
+        postData('/api/meals', newMeal);
         setInputMeal({
             title: "",
             description: "",
@@ -149,33 +134,34 @@ function OneMealCard(props) {
 }
 
 function MealCards(props) {
-    return (
-        <Row xs={1} md={3} className="g-4 mx-0">
-            {Array.from(props.array).map((meal) => {
-                let fileName = `./public/img/${meal.id}.jpg`
-                return (
-                    <Col className="px-0" key={meal.id}>
-                        <OneMealCard img={fileName} title={meal.title} description={meal.description} link={meal.id} url={props.url} location={meal.location} time={meal.when} />
-                    </Col>
-                )
-            }
-            )}
-        </Row>
-    )
+    const urlFetch = '/api/meals';
+    const { fetchData, fetchError, loading } = useFetch(urlFetch)
+    const { url } = props;
+
+    if (fetchError) {
+        return <Error />
+    } else {
+        return (
+            <div>
+                {loading && <Loading />}
+                <Row xs={1} md={3} className="g-4 mx-0">
+                    {fetchData && Array.from(fetchData).map((meal) => {
+                        let fileName = `./public/img/${meal.id}.jpg`
+                        return (
+                            <Col className="px-0" key={meal.id}>
+                                <OneMealCard img={fileName} title={meal.title} description={meal.description} link={meal.id} url={url} location={meal.location} time={meal.when} />
+                            </Col>
+                        )
+                    }
+                    )}
+                </Row>
+            </div>
+        )
+    }
 }
 
 export default function MealsList() {
-    const [meals, setMeals] = useState([]);
     const { path, url } = useRouteMatch()
-    console.log(url, ' url');
-    console.log(path, ' path')
-
-    useEffect(() => {
-        fetch('/api/meals')
-            .then((response) => response.json())
-            .then((data) => setMeals(data));
-    }, [])
-
     return (
         <MainContainer componentStyle="meals-section-container ">
             <div className="w-100 d-flex flex-column align-items-center pb-5 px-5">
@@ -184,11 +170,10 @@ export default function MealsList() {
                     <SearchBar />
                 </div>
                 <div className="meal-collection-container">
-                    <MealCards array={meals} url={url} />
+                    <MealCards url={url} />
                 </div>
                 <ModalContainer />
             </div>
-
             <Switch>
                 <Route path={`${path}/:id`}>
                     <MealId />
