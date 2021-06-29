@@ -6,10 +6,11 @@ import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import './MealId.css'
+import './OneMealOptions.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import TextInput, { EmailInput, TextArea, NumberInput } from "./InputsComponent";
+import MealImage, { mealImageSource } from "./ImageComponent";
 
 function AddNewReservation(props) {
     const { availableMeal } = props;
@@ -164,7 +165,13 @@ function MealForms(props) {
 }
 
 function MealInformation(props) {
-    const { meal, availableMeal, error, loading } = props
+    const { meal, availableMeal, error, loading, mealId } = props
+    let mealImage = mealImageSource.find(image => image.id == mealId);
+    if (mealImage) {
+        mealImage = mealImage.src
+    } else {
+        mealImage = "https://images.pexels.com/photos/616401/pexels-photo-616401.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    }
     if (error) {
         return <Error />
     } else {
@@ -173,7 +180,7 @@ function MealInformation(props) {
                 {loading && <Loading />}
                 {meal && <div>
                     <h2 className="meal-title text-center">{meal.title}</h2>
-                    <img src={`./public/img/${meal.id}.jpg`} alt="image of the meal" className="meal-img" />
+                    <MealImage source={mealImage} />
                     <div className="pt-5">
                         <h4 className="font-weight-bold">Description</h4>
                         <p>{meal.description}</p>

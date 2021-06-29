@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch, useRouteMatch, Link } from "react-router-dom";
-import MealId from "./OneMealOptions";
+import OneMealOptions from "./OneMealOptions";
 import MainContainer from "./MainContainer";
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
@@ -11,6 +11,7 @@ import "./MealsList.css";
 import SearchBar from "./SearchTitle";
 import TextInput, { TextArea, NumberInput, DateInput } from "./InputsComponent";
 import { postUserInput, Loading, useFetch, Error } from "./ManageFetch";
+import { mealImageSource } from "./ImageComponent";
 
 function FormModal(props) {
     return (
@@ -106,10 +107,18 @@ function AddMeal() {
 }
 
 function OneMealCard(props) {
+
+    let mealImage = mealImageSource.find(oneImage => oneImage.id == props.id)
+    if (mealImage) {
+        mealImage = mealImage.src
+    } else {
+        mealImage = "https://images.pexels.com/photos/349609/pexels-photo-349609.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    }
+
     return (
         <Card className="meal-card p-3">
             <div className="card-image-container">
-                <Card.Img variant="top" className="meal-card-img" src={props.img} alt="meal image" />
+                {<Card.Img variant="top" className="meal-card-img" src={mealImage} alt="meal image" />}
             </div>
             <Card.Body className="px-0">
                 <Card.Title className="meal-card-title">{props.title}</Card.Title>
@@ -121,7 +130,7 @@ function OneMealCard(props) {
                         {props.location}
                     </Card.Text>
                 </div>
-                <Link to={`${props.url}/${props.link}`}>
+                <Link to={`${props.url}/${props.id}`}>
                     <Button className="meal-card-button">
                         Go to meal
                     </Button>
@@ -144,10 +153,9 @@ function MealCards(props) {
                 {loading && <Loading />}
                 <Row xs={1} md={3} className="g-4 mx-0">
                     {fetchResponse && Array.from(fetchResponse).map((meal) => {
-                        let fileName = `./public/img/${meal.id}.jpg`
                         return (
                             <Col className="px-0" key={meal.id}>
-                                <OneMealCard img={fileName} title={meal.title} description={meal.description} link={meal.id} url={url} location={meal.location} time={meal.when} />
+                                <OneMealCard id={meal.id} title={meal.title} description={meal.description} url={url} location={meal.location} time={meal.when} />
                             </Col>
                         )
                     }
@@ -174,7 +182,7 @@ export default function MealsList() {
             </div>
             <Switch>
                 <Route path={`${path}/:id`}>
-                    <MealId />
+                    <OneMealOptions />
                 </Route>
             </Switch>
         </MainContainer>
