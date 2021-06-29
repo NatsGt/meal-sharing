@@ -26,7 +26,7 @@ export default function manageFetch(url) {
 }
 
 function useFetch(url) {
-    const [fetchData, setFetchData] = useState();
+    const [fetchResponse, setFetchResponse] = useState();
     const [fetchError, setFetchError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -35,8 +35,8 @@ function useFetch(url) {
             setLoading(true);
             try {
                 const response = await fetch(url);
-                const databaseData = await response.json();
-                setFetchData(databaseData);
+                const dbEntries = await response.json();
+                setFetchResponse(dbEntries);
                 setFetchError("");
             } catch (error) {
                 setFetchError(error)
@@ -44,12 +44,12 @@ function useFetch(url) {
             setLoading(false)
         })();
     }, [url])
-    return { fetchData, fetchError, loading }
+    return { fetchResponse, fetchError, loading }
 }
 
-function postData(url, objectToPost) {
+function postUserInput(url, objectToPost) {
     (async () => {
-        await fetch(url, {
+        const response = await fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             headers: {
@@ -58,7 +58,11 @@ function postData(url, objectToPost) {
             },
             body: JSON.stringify(objectToPost) // body data type must match "Content-Type" header
         })
+        if (!response.ok) {
+            alert("An error ocurred, try again")
+            return
+        }
     })();
 }
 
-export { useFetch, postData, Loading, Error }
+export { useFetch, postUserInput, Loading, Error }

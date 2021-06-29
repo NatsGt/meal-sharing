@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, useParams } from "react-router-dom";
 import MainContainer from "./MainContainer";
-import manageFetch, { postData, Loading, Error, useFetch } from "./ManageData";
+import manageFetch, { postUserInput, Loading, Error, useFetch } from "./ManageFetch";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import Accordion from 'react-bootstrap/Accordion';
@@ -26,7 +26,7 @@ function AddNewReservation(props) {
         setNewReservation(inputReservation)
     }, [inputReservation])
 
-    function handleChange(input) {
+    function controlReservationInputChange(input) {
         const { name, value } = input;
         setInputReservation((prev) => {
             return {
@@ -36,8 +36,8 @@ function AddNewReservation(props) {
         })
     }
 
-    function handleSubmit() {
-        postData('/api/reservations', newReservation);
+    function controlReservationFormSubmit() {
+        postUserInput('/api/reservations', newReservation);
         setInputReservation({
             number_of_guests: "",
             meal_id: props.mealId,
@@ -48,11 +48,11 @@ function AddNewReservation(props) {
     }
     return (
         <div className="reservation-form">
-            <Form onSubmit={handleSubmit}>
-                <NumberInput change={handleChange} label="Number of Guests*" placeholder="Number of guests" name="number_of_guests" value={inputReservation.number_of_guests} min="1" max={availableMeal ? (availableMeal.max_reservations - availableMeal.made_reservations) : 100} />
-                <TextInput change={handleChange} label="Name*" placeholder="Enter your name" name="contact_name" value={inputReservation.contact_name} />
-                <NumberInput change={handleChange} label="Phone" placeholder="Contact number" name="contact_phonenumber" value={inputReservation.contact_phonenumber} min="8" />
-                <EmailInput change={handleChange} label="Email*" placeholder="Contact email" name="contact_email" value={inputReservation.contact_email} />
+            <Form onSubmit={controlReservationFormSubmit}>
+                <NumberInput change={controlReservationInputChange} label="Number of Guests*" placeholder="Number of guests" name="number_of_guests" value={inputReservation.number_of_guests} min="1" max={availableMeal ? (availableMeal.max_reservations - availableMeal.made_reservations) : 100} />
+                <TextInput change={controlReservationInputChange} label="Name*" placeholder="Enter your name" name="contact_name" value={inputReservation.contact_name} />
+                <NumberInput change={controlReservationInputChange} label="Phone" placeholder="Contact number" name="contact_phonenumber" value={inputReservation.contact_phonenumber} min="8" />
+                <EmailInput change={controlReservationInputChange} label="Email*" placeholder="Contact email" name="contact_email" value={inputReservation.contact_email} />
                 <Button type="submit" className="add-button" >
                     Book reservation
                 </Button>
@@ -83,11 +83,11 @@ function ReviewsBox(props) {
     const [reviews, setReviews] = useState()
     useEffect(() => {
         manageFetch('/api/reviews')
-            .then((data) => data.filter(review => review.meal_id == id))
+            .then((dbReviews) => dbReviews.filter(review => review.meal_id == id))
             .then((mealReviews) => setReviews(mealReviews))
     }, [])
     return (
-        <div className="data-container mt-5 p-5">
+        <div className="information-box-container mt-5 p-5">
             <h3>Customers reviews</h3>
             <div className="reviews-container my-5">
                 {(reviews && reviews.length > 0) ? (reviews.map(review => <Review key={review.id} title={review.title} description={review.description} review={review.stars} />)) : <div>No reviews</div>}
@@ -111,7 +111,7 @@ function AddReview(props) {
         setNewReview(inputReview)
     }, [inputReview])
 
-    function handleChange(input) {
+    function controlReviewInputChange(input) {
         const { name, value } = input;
         setInputReview((prev) => {
             return {
@@ -121,8 +121,8 @@ function AddReview(props) {
         })
     }
 
-    function handleSubmit() {
-        postData('/api/reviews', newReview);
+    function controlReviewFormSubmit() {
+        postUserInput('/api/reviews', newReview);
         setInputReview({
             title: "",
             meal_id: props.mealId,
@@ -132,10 +132,10 @@ function AddReview(props) {
     }
     return (
         <div className="reservation-form">
-            <Form onSubmit={handleSubmit}>
-                <TextInput change={handleChange} label="Title" placeholder="Enter a title" name="title" value={inputReview.title} />
-                <TextArea change={handleChange} label="Description" placeholder="Describe your experience" name="description" value={inputReview.description} />
-                <NumberInput change={handleChange} label="Stars" placeholder="Review 1-5" name="stars" value={inputReview.stars} min="1" max="5" />
+            <Form onSubmit={controlReviewFormSubmit}>
+                <TextInput change={controlReviewInputChange} label="Title" placeholder="Enter a title" name="title" value={inputReview.title} />
+                <TextArea change={controlReviewInputChange} label="Description" placeholder="Describe your experience" name="description" value={inputReview.description} />
+                <NumberInput change={controlReviewInputChange} label="Stars" placeholder="Review 1-5" name="stars" value={inputReview.stars} min="1" max="5" />
                 <Button type="submit" className="add-button">
                     Add review
                 </Button>
@@ -149,7 +149,7 @@ function MealForms(props) {
         <Accordion className="accordion-box">
             <Card>
                 <Card.Header >
-                    <Accordion.Toggle as={Button} variant="link" eventKey="0" className="text-uppercase">
+                    <Accordion.Toggle as={Button} variant="link" eventKey="0" className="text-uppercase font-weight-bold">
                         Make a reservation
                     </Accordion.Toggle>
                 </Card.Header>
@@ -163,13 +163,13 @@ function MealForms(props) {
     )
 }
 
-function MealData(props) {
+function MealInformation(props) {
     const { meal, availableMeal, error, loading } = props
     if (error) {
         return <Error />
     } else {
         return (
-            <div className="data-container p-5">
+            <div className="information-box-container p-5">
                 {loading && <Loading />}
                 {meal && <div>
                     <h2 className="meal-title text-center">{meal.title}</h2>
@@ -190,12 +190,12 @@ function MealData(props) {
     }
 }
 
-export default function MealId() {
+export default function OneMealOptions() {
     const { id } = useParams();
     const [availableMeal, setAvailableMeal] = useState()
     const [isAvailable, setIsAvailable] = useState(false)
     const url = `/api/meals/${id}`
-    const { fetchData, fetchError, loading } = useFetch(url)
+    const { fetchResponse, fetchError, loading } = useFetch(url)
 
     useEffect(() => {
         manageFetch(`/api/meals?availableReservations=true`)
@@ -213,7 +213,7 @@ export default function MealId() {
     return (
         <MainContainer componentStyle="meal-section-container d-flex flex-column flex-lg-row justify-content-lg-between p-5">
             <div>
-                <MealData availableMeal={availableMeal} meal={fetchData} mealId={id} error={fetchError} loading={loading} />
+                <MealInformation availableMeal={availableMeal} meal={fetchResponse} mealId={id} error={fetchError} loading={loading} />
                 <ReviewsBox id={id} />
             </div>
             <div className="accordion-container">

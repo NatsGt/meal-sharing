@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch, useRouteMatch, Link } from "react-router-dom";
-import MealId from "./MealId";
+import MealId from "./OneMealOptions";
 import MainContainer from "./MainContainer";
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form'
 import "./MealsList.css";
 import SearchBar from "./SearchTitle";
 import TextInput, { TextArea, NumberInput, DateInput } from "./InputsComponent";
-import { postData, Loading, useFetch, Error } from "./ManageData";
+import { postUserInput, Loading, useFetch, Error } from "./ManageFetch";
 
 function FormModal(props) {
     return (
@@ -65,7 +65,7 @@ function AddMeal() {
         setNewMeal(inputMeal)
     }, [inputMeal])
 
-    function handleChange(input) {
+    function controlInputChange(input) {
         const { name, value } = input;
         setInputMeal((prev) => {
             return {
@@ -75,8 +75,8 @@ function AddMeal() {
         })
     }
 
-    function handleSubmit() {
-        postData('/api/meals', newMeal);
+    function controlFormSubmit() {
+        postUserInput('/api/meals', newMeal);
         setInputMeal({
             title: "",
             description: "",
@@ -88,21 +88,19 @@ function AddMeal() {
     }
     return (
         <div className="meal-form">
-            <Form onSubmit={handleSubmit}>
-                <TextInput change={handleChange} label="Title*" placeholder="Enter the name of your meal" name="title" value={inputMeal.title} />
-                <TextArea change={handleChange} label="Description*" placeholder="Enter a description" name="description" value={inputMeal.description} />
-                <TextInput change={handleChange} label="Location*" placeholder="Enter the location" name="location" value={inputMeal.location} />
-                <DateInput change={handleChange} label="Date*" placeholder="Enter the date and time" name="when" value={inputMeal.when} />
-                <NumberInput change={handleChange} label="Max Reservation*" placeholder="Max number of guests" name="max_reservations" value={inputMeal.max_reservations} min="1" max="100" />
-                <NumberInput change={handleChange} label="Price*" placeholder="Price" name="max_reservations" value={inputMeal.price} min="1" max="1000000" />
+            <Form onSubmit={controlFormSubmit}>
+                <TextInput change={controlInputChange} label="Title*" placeholder="Enter the name of your meal" name="title" value={inputMeal.title} />
+                <TextArea change={controlInputChange} label="Description*" placeholder="Enter a description" name="description" value={inputMeal.description} />
+                <TextInput change={controlInputChange} label="Location*" placeholder="Enter the location" name="location" value={inputMeal.location} />
+                <DateInput change={controlInputChange} label="Date*" placeholder="Enter the date and time" name="when" value={inputMeal.when} />
+                <NumberInput change={controlInputChange} label="Max Reservation*" placeholder="Max number of guests" name="max_reservations" value={inputMeal.max_reservations} min="1" max="100" />
+                <NumberInput change={controlInputChange} label="Price*" placeholder="Price" name="max_reservations" value={inputMeal.price} min="1" max="1000000" />
                 <div className="d-flex justify-content-center">
                     <Button type="submit" className="form-add-button">
                         Add meal
                     </Button>
                 </div>
             </Form>
-
-
         </div>
     )
 }
@@ -135,7 +133,7 @@ function OneMealCard(props) {
 
 function MealCards(props) {
     const urlFetch = '/api/meals';
-    const { fetchData, fetchError, loading } = useFetch(urlFetch)
+    const { fetchResponse, fetchError, loading } = useFetch(urlFetch)
     const { url } = props;
 
     if (fetchError) {
@@ -145,7 +143,7 @@ function MealCards(props) {
             <div>
                 {loading && <Loading />}
                 <Row xs={1} md={3} className="g-4 mx-0">
-                    {fetchData && Array.from(fetchData).map((meal) => {
+                    {fetchResponse && Array.from(fetchResponse).map((meal) => {
                         let fileName = `./public/img/${meal.id}.jpg`
                         return (
                             <Col className="px-0" key={meal.id}>

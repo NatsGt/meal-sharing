@@ -4,7 +4,7 @@ import TestComponent from "./components/TestComponent/TestComponent";
 import Home from './components/Home';
 import Navigation from './components/Navigation';
 import MealsList from './components/MealsList';
-import MealId from './components/MealId';
+import OneMealOptions from './components/OneMealOptions';
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
             <MealsList />
           </Route>
           <Route path="/meals/:id" >
-            <MealId />
+            <OneMealOptions />
           </Route>
           <Route exact path="/test-component">
             <TestComponent></TestComponent>

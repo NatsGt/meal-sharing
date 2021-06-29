@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import MainContainer from "./MainContainer";
 import SearchBar from './SearchTitle'
-import { useFetch, Loading, Error } from "./ManageData";
+import { useFetch, Loading, Error } from "./ManageFetch";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Carousel from 'react-bootstrap/Carousel';
@@ -12,7 +12,7 @@ import './Home.css'
 
 function MealsCollection() {
     const url = '/api/meals'
-    const { fetchData, fetchError, loading } = useFetch(url);
+    const { fetchResponse, fetchError, loading } = useFetch(url);
 
     if (fetchError) {
         return (
@@ -25,11 +25,13 @@ function MealsCollection() {
             <ul>
                 {loading && <Loading />}
                 <Row xs={2} md={3} className="g-4 row-meals-collection">
-                    {(fetchData) && fetchData.map(meal => (
-                        <Col key={meal.id}>
-                            <li className="meal-li" >{meal.title}</li>
-                        </Col>
-                    ))}
+                    {(fetchResponse) && fetchResponse.map(meal => {
+                        return (
+                            <Col key={meal.id}>
+                                <li className="meal-li" >{meal.title}</li>
+                            </Col>
+                        )
+                    })}
                 </Row>
             </ul>
         </div>
@@ -67,22 +69,23 @@ function ReviewCarousel(props) {
 
 function ReviewsSection() {
     const url = '/api/reviews'
-    const [goodReviews, setGoodReviews] = useState([]);
-    const { fetchData, fetchError } = useFetch(url);
-    /* useEffect(() => {
-        fetchData.then((data) => {
-            const selectedReviews = data.filter((review) => review.stars >= 4);
-            setGoodReviews(selectedReviews)
-        });
-    }, []) */
+    const { fetchResponse, fetchError } = useFetch(url);
+
     if (fetchError) {
-        return <Error />
+        return (
+            <MainContainer componentStyle="reviews-section">
+                <Error />
+            </MainContainer>
+        )
+    } else {
+        return (
+            <MainContainer componentStyle="reviews-section">
+                {fetchResponse && <ReviewCarousel content={fetchResponse.filter((review) => review.stars >= 4)} />}
+            </MainContainer>
+        )
     }
-    return (
-        <MainContainer componentStyle="reviews-section">
-            {fetchData && <ReviewCarousel content={fetchData.filter((review) => review.stars >= 4)} />}
-        </MainContainer>
-    )
+
+
 }
 
 function MealsSection() {
@@ -95,7 +98,6 @@ function MealsSection() {
                     <p>Experience new flavours, test your boundaries, have an experience of a lifetime with your loved ones while you meet new cultures through food.</p>
                     <MealsCollection />
                 </div>
-
             </div>
         </MainContainer>
     )
@@ -136,6 +138,5 @@ export default function Home() {
             <MealsSection />
             <FooterSection />
         </div>
-
     )
 }
