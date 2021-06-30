@@ -3,7 +3,7 @@ import { Image } from "react-bootstrap";
 
 const reviewImageSource = [
     {
-        reviewId: 2,
+        reviewId: 15,
         contact_name: "Chuck Norris",
         src: "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTgwNTA1Mzc0MzgwNTMzMzky/gettyimages-150327735-copy.jpg"
     },
