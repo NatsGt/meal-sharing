@@ -5,7 +5,7 @@ import { useFetch, Loading, Error } from "./ManageFetch";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Carousel from 'react-bootstrap/Carousel';
-import Image from 'react-bootstrap/Image'
+import { ContactImage, reviewImageSource } from './ImageComponent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import './Home.css'
@@ -45,16 +45,22 @@ function StarReview(props) {
 }
 
 function ReviewCarousel(props) {
+
     return (
         <Carousel>
             {props.content.map(aReview => {
+                let userImage = reviewImageSource.find(contactImage => contactImage.reviewId == aReview.id);
+                if (userImage) {
+                    userImage = userImage.src;
+                } else {
+                    userImage = "https://images.pexels.com/photos/7133214/pexels-photo-7133214.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                }
                 return (
                     <Carousel.Item key={aReview.id}>
                         <div className="d-flex justify-content-center align-items-start w-100 slide-content pt-5">
-                            <Image className="slide-img"
-                                src="https://images.pexels.com/photos/8107166/pexels-photo-8107166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                                alt="First slide"
-                                roundedCircle />
+                            <div className="slide-img">
+                                <ContactImage src={userImage} />
+                            </div>
                         </div>
                         <Carousel.Caption>
                             <p className="slide-text mb-0">{aReview.description}</p>

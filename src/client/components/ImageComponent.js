@@ -3,26 +3,30 @@ import { Image } from "react-bootstrap";
 
 const reviewImageSource = [
     {
+        reviewId: 2,
         contact_name: "Chuck Norris",
         src: "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTgwNTA1Mzc0MzgwNTMzMzky/gettyimages-150327735-copy.jpg"
     },
     {
+        reviewId: 75,
         contact_name: "Rachel Green",
         src: "https://seriefriends.com/wp-content/uploads/2020/10/rachel-green.jpg"
     },
     {
+        reviewId: 25,
         contact_name: "Rory Gilmore",
         src: "https://brendaforever.files.wordpress.com/2016/08/66f60900-fd8b-0132-f418-0e18518aac2f.jpg?w=840"
     },
     {
+        reviewId: 45,
         contact_name: "John Dorian",
         src: "https://brendaforever.files.wordpress.com/2016/08/66f60900-fd8b-0132-f418-0e18518aac2f.jpg?w=840https://static3.srcdn.com/wordpress/wp-content/uploads/2019/09/Scrubs-J.D..jpg"
     },
     {
-        contact_name: "Ted Mosby",
-        src: "https://static.wikia.nocookie.net/comoconociavuestramadre/images/a/a3/Ted_profile.jpg/revision/latest/top-crop/width/360/height/450?cb=20120905094024&path-prefix=es"
+        reviewId: 55,
+        contact_name: "Frodo Baggins",
+        src: "https://i.pinimg.com/originals/98/f3/09/98f309bd89d9ed8fe2133589012aa089.jpg"
     },
-
 ]
 
 const mealImageSource = [
@@ -32,7 +36,7 @@ const mealImageSource = [
     },
     {
         id: 15,
-        src: "https://cdn.kiwilimon.com/recetaimagen/2806/25790.jpg"
+        src: "https://res.cloudinary.com/hksqkdlah/image/upload/SFS_papusas-173_vojda5.jpg"
     },
     {
         id: 25,
@@ -62,10 +66,14 @@ export default function MealImage(props) {
 }
 
 function ContactImage(props) {
-    <Image className="slide-img"
-        src={props.src}
-        alt="author of review"
-        roundedCircle />
+    return (
+        <Image
+            src={props.src}
+            alt="author of review"
+            fluid
+        />
+    )
+
 }
 
-export { mealImageSource, ContactImage };
+export { mealImageSource, ContactImage, reviewImageSource };
