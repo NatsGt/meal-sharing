@@ -15,17 +15,17 @@ const reviewImageSource = [
     {
         reviewId: 25,
         contact_name: "Rory Gilmore",
-        src: "https://brendaforever.files.wordpress.com/2016/08/66f60900-fd8b-0132-f418-0e18518aac2f.jpg?w=840"
+        src: "https://media.allure.com/photos/580e7d3b2e7c1dc713a4171d/1:1/w_2000,h_2000,c_limit/rory5.jpg"
     },
     {
         reviewId: 45,
         contact_name: "John Dorian",
-        src: "https://brendaforever.files.wordpress.com/2016/08/66f60900-fd8b-0132-f418-0e18518aac2f.jpg?w=840https://static3.srcdn.com/wordpress/wp-content/uploads/2019/09/Scrubs-J.D..jpg"
+        src: "http://vignette2.wikia.nocookie.net/scrubs/images/4/48/7x10_JD_fantasizes.jpg/revision/latest?cb=20091127224549"
     },
     {
         reviewId: 55,
         contact_name: "Frodo Baggins",
-        src: "https://i.pinimg.com/originals/98/f3/09/98f309bd89d9ed8fe2133589012aa089.jpg"
+        src: "https://data.whicdn.com/images/323930225/original.jpg"
     },
 ]
 
@@ -44,7 +44,7 @@ const mealImageSource = [
     },
     {
         id: 35,
-        src: "http://www.primeraedicion.com.ar/wp-content/uploads/2019/09/arepa.jpg"
+        src: "https://lanoticia.com/wp-content/uploads/2020/10/adobestock-193828285-scaled.jpeg"
     },
     {
         id: 45,

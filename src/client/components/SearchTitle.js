@@ -5,6 +5,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from "react-bootstrap/Button";
 import './SearchTitle.css';
 import useOnClickOutside from "./UseOnClickOutside";
+import manageFetch, { Loading } from "./ManageFetch";
 
 function ResultItem(props) {
     const [hoverMeal, setHoverMeal] = useState(false)
@@ -16,6 +17,7 @@ function ResultItem(props) {
 function ResultBox(props) {
     return (
         <div className="results-container p-3">
+            {props.loading && <Loading />}
             {props.result.map(titleMatch => <ResultItem key={titleMatch.id} id={titleMatch.id} click={props.click} title={titleMatch.title} className="result-item" />)}
         </div>
     )
@@ -47,16 +49,21 @@ export default function SearchBar() {
     const [results, setResults] = useState([]);
     const [visible, setVisible] = useState(false);
     const [queryId, setQueryId] = useState();
+    const [loading, setLoading] = useState(false)
 
     useOnClickOutside(ref, () => setVisible(false));
 
     useEffect(() => {
+        setLoading(true)
         if (query) {
-            fetch(`http://localhost:5000/api/meals?title=${query}`)
-                .then((response) => response.json())
-                .then((data) => setResults(data));
+            manageFetch(`http://localhost:5000/api/meals?title=${query}`)
+                .then((data) => {
+                    setResults(data)
+                    setLoading(false)
+                });
         } else {
             setResults([])
+            setLoading(false)
         }
     }, [query])
 
@@ -67,9 +74,9 @@ export default function SearchBar() {
     }
 
     return (
-        <div ref={ref}>
+        <div className="search-container" ref={ref}>
             <InputSearch value={query} id={queryId} visible={setVisible} change={setQuery} />
-            {visible && (results.length > 0) && <ResultBox result={results} click={resultClick} />}
+            {visible && (results.length > 0) && <ResultBox result={results} click={resultClick} loading={loading} />}
         </div>
     )
 }
