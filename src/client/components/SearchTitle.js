@@ -56,7 +56,7 @@ export default function SearchBar() {
     useEffect(() => {
         setLoading(true)
         if (query) {
-            manageFetch(`http://localhost:5000/api/meals?title=${query}`)
+            manageFetch(`/api/meals?title=${query}`)
                 .then((data) => {
                     setResults(data)
                     setLoading(false)

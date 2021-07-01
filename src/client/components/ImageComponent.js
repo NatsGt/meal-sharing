@@ -40,11 +40,11 @@ const mealImageSource = [
     },
     {
         id: 25,
-        src: "https://mk0madensverdencsg1n.kinstacdn.com/wp-content/uploads/2017/03/flaeskesteg-i-ovn.jpg"
+        src: "http://sofiesspisekammer.dk/wp-content/uploads/2013/02/Fyldt-nakkekam-f%C3%A6rdig-steg-februar-2013.jpg"
     },
     {
         id: 35,
-        src: "https://lanoticia.com/wp-content/uploads/2020/10/adobestock-193828285-scaled.jpeg"
+        src: "https://www.nutricionesencial.es/wp-content/uploads/2020/06/Arepas4.jpg"
     },
     {
         id: 45,
