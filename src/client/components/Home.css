@@ -62,6 +62,12 @@ h1 {
   font-size: 50px;
 }
 
+.rounded-img {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
 /*Reviews Section*/
 
 .reviews-section {
@@ -72,9 +78,6 @@ h1 {
 .slide-img {
   width: 100px;
   height: 100px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
 }
 
 .slide-content {

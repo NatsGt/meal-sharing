@@ -6,7 +6,6 @@
 }
 
 .modal-container {
-  width: 50vw;
   height: 100%;
   position: absolute;
   top: 50%;
@@ -40,7 +39,6 @@
 }
 
 .meal-card {
-  width: 80%;
   margin: 25px 0;
   background-color: rgba(27, 178, 140, 0.4);
 }

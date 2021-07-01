@@ -2,6 +2,7 @@ import React from "react";
 import MainContainer from "./MainContainer";
 import SearchBar from './SearchTitle'
 import { useFetch, Loading, Error } from "./ManageFetch";
+import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Carousel from 'react-bootstrap/Carousel';
@@ -20,7 +21,7 @@ function MealsCollection() {
         )
     }
     return (
-        <div>
+        <div className="d-flex flex-column align-items-center align-items-lg-start">
             <p>Come and share these meals...</p>
             <ul>
                 {loading && <Loading />}
@@ -28,7 +29,7 @@ function MealsCollection() {
                     {(fetchResponse) && fetchResponse.map(meal => {
                         return (
                             <Col key={meal.id}>
-                                <li className="meal-li" >{meal.title}</li>
+                                <li className="meal-li text-center text-lg-left" >{meal.title}</li>
                             </Col>
                         )
                     })}
@@ -58,7 +59,7 @@ function ReviewCarousel(props) {
                 return (
                     <Carousel.Item key={aReview.id}>
                         <div className="d-flex justify-content-center align-items-start w-100 slide-content pt-5">
-                            <div className="slide-img">
+                            <div className="slide-img rounded-img">
                                 <ContactImage src={userImage} />
                             </div>
                         </div>
@@ -96,13 +97,16 @@ function ReviewsSection() {
 
 function MealsSection() {
     return (
-        <MainContainer componentStyle="meals-section pr-3">
-            <div className="d-flex flex-column flex-lg-row">
-                <div className="image-shape"></div>
-                <div className="d-flex flex-column justify-content-center">
+        <MainContainer componentStyle="meals-section">
+            <div className="d-flex flex-column flex-lg-row justify-content-around align-items-center h-100">
+                <div className="image-shape d-none d-lg-block"></div>
+                <div className="d-flex flex-column justify-content-center align-items-center align-items-lg-start">
                     <h2 className="meals-section-title">Discover</h2>
-                    <p>Experience new flavours, test your boundaries, have an experience of a lifetime with your loved ones while you meet new cultures through food.</p>
+                    <p className="text-center text-lg-left">Experience new flavours, test your boundaries, have an experience of a lifetime with your loved ones while you meet new cultures through food.</p>
                     <MealsCollection />
+                </div>
+                <div className="d-lg-none w-75 rounded-img my-3">
+                    <Image src="https://images.pexels.com/photos/954677/pexels-photo-954677.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" fluid />
                 </div>
             </div>
         </MainContainer>
@@ -119,8 +123,10 @@ function MainPage() {
                         Food tastes better when you share it
                     </p>
                 </div>
-                <div className="w-50 mt-5">
-                    <SearchBar />
+                <div className="w-100 mt-5 d-lg-flex justify-content-center">
+                    <Col xs={12} lg={6}>
+                        <SearchBar />
+                    </Col>
                 </div>
             </div>
         </MainContainer>

@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import TextInput, { EmailInput, TextArea, NumberInput } from "./InputsComponent";
 import MealImage, { mealImageSource } from "./ImageComponent";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row'
 
 function AddNewReservation(props) {
     const { availableMeal } = props;
@@ -218,13 +220,23 @@ export default function OneMealOptions() {
     }, [])
 
     return (
-        <MainContainer componentStyle="meal-section-container d-flex flex-column flex-lg-row justify-content-lg-between p-5">
-            <div>
-                <MealInformation availableMeal={availableMeal} meal={fetchResponse} mealId={id} error={fetchError} loading={loading} />
-                <ReviewsBox id={id} />
-            </div>
-            <div className="accordion-container">
-                <MealForms visible={isAvailable} id={id} availableMeal={availableMeal} />
-            </div>
+        <MainContainer componentStyle="meal-section-container py-5 px-lg-5 px-3">
+            <Row>
+                <Col xs={12} lg={8} className="order-12 order-lg-1">
+                    <div className="w-100">
+                        <MealInformation availableMeal={availableMeal} meal={fetchResponse} mealId={id} error={fetchError} loading={loading} />
+                        <ReviewsBox id={id} />
+                    </div>
+                </Col>
+
+                <Col xs={12} lg={4} className="order-1 order-lg-12">
+                    <div className="w-100 ml-lg-3 my-5 my-lg-0">
+                        <MealForms visible={isAvailable} id={id} availableMeal={availableMeal} />
+                    </div>
+                </Col>
+
+            </Row>
+
+
         </MainContainer>)
 }

@@ -16,7 +16,7 @@ import { mealImageSource } from "./ImageComponent";
 function FormModal(props) {
     return (
         <div className="modal-layover">
-            <div className="modal-container">
+            <div className="modal-container w-75">
                 <AddMeal />
                 <Button onClick={props.close} className="modal-button" size="sm">x</Button>
             </div>
@@ -151,10 +151,10 @@ function MealCards(props) {
         return (
             <div>
                 {loading && <Loading />}
-                <Row xs={1} md={3} className="g-4 mx-0">
+                <Row xs={1} md={4} className="g-4 mx-0">
                     {fetchResponse && Array.from(fetchResponse).map((meal) => {
                         return (
-                            <Col className="px-0" key={meal.id}>
+                            <Col className="px-1" key={meal.id}>
                                 <OneMealCard id={meal.id} title={meal.title} description={meal.description} url={url} location={meal.location} time={meal.when} />
                             </Col>
                         )
@@ -170,10 +170,12 @@ export default function MealsList() {
     const { path, url } = useRouteMatch()
     return (
         <MainContainer componentStyle="meals-section-container ">
-            <div className="w-100 d-flex flex-column align-items-center pb-5 px-5">
-                <h1 className="mt-5 mb-2">Meal Sharing</h1>
-                <div className="w-50 my-5">
-                    <SearchBar />
+            <div className="w-100 d-flex flex-column align-items-center justify-content-center pb-5 px-5">
+                <h1 className="mt-5 mb-2 text-center">Meal Sharing</h1>
+                <div className="w-100 my-5 d-lg-flex justify-content-center">
+                    <Col xs={12} lg={6}>
+                        <SearchBar />
+                    </Col>
                 </div>
                 <div className="meal-collection-container">
                     <MealCards url={url} />
